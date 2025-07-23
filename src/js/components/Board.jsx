@@ -24,6 +24,12 @@ function Board({ players, avatars, onRestart }) {
 
   const currentPlayer = xIsNext ? "player1" : "player2";
 
+  // ✅ Mostrar "Líder de Gimnasio" si es IA
+  function displayName(playerKey) {
+    const name = players[playerKey];
+    return name === "IA" ? "Líder de Gimnasio" : name;
+  }
+
   function handleClick(index) {
     if (board[index] || winner || isDraw) return;
     const newBoard = [...board];
@@ -32,51 +38,50 @@ function Board({ players, avatars, onRestart }) {
     setXIsNext(!xIsNext);
   }
 
-  // IA simple
+  // ✅ IA mejorada
   useEffect(() => {
-  if (!xIsNext && players.player2 === "IA" && !winner && !isDraw) {
-    const makeMove = (index) => {
-      setTimeout(() => handleClick(index), 500);
-    };
-
-    const getBestMove = () => {
-      const empty = board
-        .map((cell, idx) => (cell === null ? idx : null))
-        .filter((i) => i !== null);
-
-      // IA = player2, Jugador = player1
-      const tryWinOrBlock = (player) => {
-        for (let [a, b, c] of [
-          [0, 1, 2], [3, 4, 5], [6, 7, 8],
-          [0, 3, 6], [1, 4, 7], [2, 5, 8],
-          [0, 4, 8], [2, 4, 6],
-        ]) {
-          const line = [board[a], board[b], board[c]];
-          const count = line.filter(x => x === player).length;
-          const emptyIndex = [a, b, c].find(i => board[i] === null);
-          if (count === 2 && emptyIndex !== undefined) return emptyIndex;
-        }
-        return null;
+    if (!xIsNext && players.player2 === "IA" && !winner && !isDraw) {
+      const makeMove = (index) => {
+        setTimeout(() => handleClick(index), 500);
       };
 
-      const win = tryWinOrBlock("player2");
-      if (win !== null) return win;
+      const getBestMove = () => {
+        const empty = board
+          .map((cell, idx) => (cell === null ? idx : null))
+          .filter((i) => i !== null);
 
-      const block = tryWinOrBlock("player1");
-      if (block !== null) return block;
+        const tryWinOrBlock = (player) => {
+          for (let [a, b, c] of [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6],
+          ]) {
+            const line = [board[a], board[b], board[c]];
+            const count = line.filter(x => x === player).length;
+            const emptyIndex = [a, b, c].find(i => board[i] === null);
+            if (count === 2 && emptyIndex !== undefined) return emptyIndex;
+          }
+          return null;
+        };
 
-      if (board[4] === null) return 4; // centro
+        const win = tryWinOrBlock("player2");
+        if (win !== null) return win;
 
-      const corners = [0, 2, 6, 8].filter(i => board[i] === null);
-      if (corners.length > 0) return corners[Math.floor(Math.random() * corners.length)];
+        const block = tryWinOrBlock("player1");
+        if (block !== null) return block;
 
-      return empty[Math.floor(Math.random() * empty.length)];
-    };
+        if (board[4] === null) return 4;
 
-    const move = getBestMove();
-    makeMove(move);
-  }
-}, [xIsNext, board, winner, isDraw, players]);
+        const corners = [0, 2, 6, 8].filter(i => board[i] === null);
+        if (corners.length > 0) return corners[Math.floor(Math.random() * corners.length)];
+
+        return empty[Math.floor(Math.random() * empty.length)];
+      };
+
+      const move = getBestMove();
+      makeMove(move);
+    }
+  }, [xIsNext, board, winner, isDraw, players]);
 
   function resetGame() {
     setBoard(Array(9).fill(null));
@@ -93,11 +98,11 @@ function Board({ players, avatars, onRestart }) {
       {winner || isDraw ? (
         <div className="winner-box">
           {winner
-            ? `Ha GANADO ${players[winner]} con ${avatars[winner].name.toUpperCase()}!`
-            : "EMPATE! Ambos entrenadores lo dieron todo!"}
+            ? `Ha GANADO ${displayName(winner)} con ${avatars[winner].name.toUpperCase()}!`
+            : "¡EMPATE! Ambos entrenadores lo dieron todo!"}
         </div>
       ) : (
-        <h2 className="mb-3">Turno de: {players[currentPlayer]}</h2>
+        <h2 className="mb-3">Turno de: {displayName(currentPlayer)}</h2>
       )}
 
       <div className="board">
