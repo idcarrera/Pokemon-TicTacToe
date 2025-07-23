@@ -1,11 +1,259 @@
-/* 
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-    You can write your own styles here...
-    
-    
-    ...Or you can use the import command to include 
-    other sylesheets into your bunde as well, e.j:
-    
-    import 'relative/path/to/stylesheet.scss';
+:root {
+  --color-bg: #1b0c3f	;           /* Fondo principal noche con neón */
+  --color-button: #8dfef8	;       /* Botones activos rosa neon */
+  --color-hover: #fba4f1	;        /* Botón hover dorado suave */
+  --color-board: #8a4fe3	;        /* Pantalla tipo Game Boy */
+  --color-text: #fefefe;         /* Texto blanco luminoso */
+  --color-shadow: #0a0a0a;       /* Sombras retro */
+}
 
-*/
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  text-align: center;
+  padding: 0px;
+  height: 100vh;
+  display: flexbox;
+}
+
+/* Marco de consola retro */
+.console-frame {
+  background-color: var(--color-board);
+  border: 6px double var(--color-shadow);
+  box-shadow: 0px 0px 12px var(--color-shadow), 0px 0px 30px var(--color-hover);
+  padding: 40px 20px;
+  border-radius: 20px;
+  margin: 30px auto;
+  max-width: 720px;
+  width: 100%;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.03),
+    rgba(255, 255, 255, 0.03) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+}
+
+/* Estilo del tablero */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 80px);
+  gap: 8px;
+  justify-content: center;
+  background-color: var(--color-board);
+  padding: 20px;
+  border: 6px double var(--color-shadow);
+  box-shadow: 0px 0px 10px #f3f0fd;
+  margin: 30px auto;
+  border-radius: 12px;
+}
+
+.square {
+  width: 70px;
+  height: 70px;
+  background-color: #fff5f8;
+  border: 4px solid var(--color-shadow);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s;
+}
+
+.square:hover {
+  transform: scale(1.1);
+  background-color: var(--color-hover);
+}
+
+.winner-box {
+  background-color: #fff5f8	;
+  color: var(--color-shadow);
+  font-size: 8px;
+  border: 4px double var(--color-shadow);
+  padding: 15px;
+  margin: 20px auto 8px;
+  width: fit-content;
+  max-width: 90%;
+  box-shadow: 0 0 10px #fa04dd, 0 0 15px #ff4ee9;
+  animation: popup 0.3s ease-out;
+}
+
+/* Botones */
+button {
+  background-color: var(--color-button);
+  color: var(--color-bg);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  padding: 5px 10px;
+  border: 3px solid var(--color-shadow);
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgb(255, 255, 255);
+}
+
+button:hover {
+  background-color: var(--color-hover);
+  transform: scale(1.05);
+}
+
+/* Inputs */
+input {
+  background-color: whitesmoke;
+  color: var(--color-shadow);
+  font-family: 'Press Start 2P', monospace;
+  border: 3px solid var(--color-shadow);
+  padding: 14px;
+  margin-bottom: 16px;
+  width: 100%;
+  max-width: 100%;
+  text-align: center;
+  font-size: 10px;
+  white-space: normal;
+  word-wrap: break-word;
+  line-height: 1.3;
+  box-sizing: border-box;
+  outline: none;
+}
+
+input::placeholder {
+  color: #7b7a7a;
+  opacity: 0.6;
+  text-align: center;
+}
+
+/* 🎮 Selector de modo de juego mejorado */
+input[type="radio"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background-color: #fefefe;
+  border: 3px solid #0a0a0a;
+  box-shadow: 2px 2px 0 #ff6ec7;
+  outline: none;
+  border-radius: 2px;
+  margin-right: 12px;
+  transition: all 0.2s ease-in-out;
+}
+
+input[type="radio"]:checked {
+  background-color: var(--color-button);
+  box-shadow: 2px 2px 0 #ffd700, 0 0 6px var(--color-hover);
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 20px auto;
+  gap: 16px;
+  max-width: 400px;
+  padding: 10px;
+}
+
+.button-group label {
+  font-family: 'Press Start 2P', monospace;
+  color: var(--color-text);
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  text-shadow: 1px 1px 0 var(--color-shadow);
+  cursor: pointer;
+}
+
+
+/* Imágenes retro */
+img {
+  image-rendering: pixelated;
+  width: 60px;
+  height: auto;
+  transition: transform 0.2s ease;
+}
+
+img:hover {
+  transform: scale(1.1);
+}
+
+/* Títulos */
+h1, h2, h3, h4 {
+  color: var(--color-text);
+  text-shadow: 1px 1px 0 #ff4ee9;
+}
+
+.subtitle-glow {
+  text-shadow: 0 0 5px #ff6ec7, 0 0 10px #ff6ec7, 0 0 20px #ffd700;
+  color: var(--color-light);
+}
+
+/* Animaciones */
+@keyframes popup {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 📱 Responsive para móviles */
+@media (max-width: 480px) {
+  body {
+    padding: 0;
+    font-size: 10px;
+  }
+
+  .console-frame {
+    width: 98%;
+    height: 100vh;
+    padding: 10px;
+    border-radius: 12px;
+  }
+
+  .board {
+    grid-template-columns: repeat(3, 60px);
+    gap: 4px;
+    padding: 10px;
+  }
+
+  .square {
+    width: 60px;
+    height: 60px;
+  }
+
+  .square img {
+    width: 40px;
+  }
+
+  .winner-box {
+    font-size: 8px;
+    padding: 10px;
+    margin: 10px auto;
+  }
+
+  button {
+    font-size: 8px;
+    padding: 6px 14px;
+  }
+
+  input {
+    font-size: 8px;
+    padding: 10px;
+  }
+
+  h1, h2, h3 {
+    font-size: 14px;
+  }
+}
+.console-frame {
+  /* ... */
+  max-height: 95vh;
+}
