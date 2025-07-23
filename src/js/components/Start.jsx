@@ -29,7 +29,7 @@ function Start({ onStart }) {
             checked={mode === "vsPlayer"}
             onChange={() => setMode("vsPlayer")}
           />
-          Jugar contra otro jugador
+          Jugar contra otro Entrenador
         </label>
 
         <label>
@@ -40,7 +40,7 @@ function Start({ onStart }) {
             checked={mode === "vsIA"}
             onChange={() => setMode("vsIA")}
           />
-          Jugar contra la consola (IA)
+          Jugar contra Lider de Gimnasio
         </label>
       </div>
 
@@ -51,7 +51,7 @@ function Start({ onStart }) {
       >
         <input
           type="text"
-          placeholder="Nombre del Jugador 1"
+          placeholder="Nombre de Entrenador 1"
           value={player1}
           onChange={(e) => setPlayer1(e.target.value)}
           required
@@ -60,7 +60,7 @@ function Start({ onStart }) {
         {mode === "vsPlayer" && (
           <input
             type="text"
-            placeholder="Nombre del Jugador 2"
+            placeholder="Nombre de Entrenador 2"
             value={player2}
             onChange={(e) => setPlayer2(e.target.value)}
             required
